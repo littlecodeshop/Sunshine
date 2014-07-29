@@ -1,16 +1,17 @@
 package com.iglcs.sunshine;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -51,6 +52,8 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        ArrayAdapter<String> m_adapter;
+
         public PlaceholderFragment() {
         }
 
@@ -58,6 +61,37 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            ArrayList<String> data = new ArrayList<String>();
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            data.add("Today - sunny 88/63");
+            data.add("Tomorrow - Cloudy 56/43");
+            data.add("Wednesday - Rainy 64/76");
+            m_adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.List_item_forecast_textview, data);
+            ListView l = (ListView) rootView.findViewById(R.id.listview_forecast);
+            l.setAdapter(m_adapter);
             return rootView;
         }
     }
