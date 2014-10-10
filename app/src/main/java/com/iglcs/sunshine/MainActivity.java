@@ -1,5 +1,6 @@
 package com.iglcs.sunshine;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -21,8 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -40,7 +41,6 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
                 BufferedReader reader           = null;
 
                 //get the parameter -> postal code
-                String postCode = "94370";
+                String postCode = DEFAULT_POSTCODE;
                 if(strings.length>0)
                     postCode = strings[0];
 
@@ -122,6 +122,7 @@ public class MainActivity extends ActionBarActivity {
                         // Nothing to do.
                         forecastJsonStr = null;
                     }
+                    assert inputStream != null;
                     reader = new BufferedReader(new InputStreamReader(inputStream));
 
                     String line;
@@ -129,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
                         // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
                         // But it does make debugging a *lot* easier if you print out the completed
                         // buffer for debugging.
-                        buffer.append(line + "\n");
+                        buffer.append(line).append("\n");
                     }
 
                     if (buffer.length() == 0) {
@@ -160,7 +161,6 @@ public class MainActivity extends ActionBarActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                String city = null;
                 try {
 
                     ArrayList<String> forcasts = WeatherDataParser.getForcastArray(s);
@@ -185,9 +185,22 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             ArrayList<String> data = new ArrayList<String>();
 
-            m_adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.List_item_forecast_textview, data);
+            m_adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, data);
             ListView l = (ListView) rootView.findViewById(R.id.listview_forecast);
             l.setAdapter(m_adapter);
+            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    Context context = getActivity().getApplicationContext();
+
+                    CharSequence toast_message =(String)adapterView.getAdapter().getItem(i) ;
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context,toast_message,duration);
+                    toast.show();
+                    Log.v("TEST","Hello world !!");
+                }
+            });
             return rootView;
         }
     }
