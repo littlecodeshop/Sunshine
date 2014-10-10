@@ -10,5 +10,6 @@
     <string name="settings_location_key">location</string>
     <string name="settings_location_title">ZIP Code</string>
     <string name="settings_location_default">94370</string>
+    <string name="action_refresh">Refresh</string>
 
 </resources>
