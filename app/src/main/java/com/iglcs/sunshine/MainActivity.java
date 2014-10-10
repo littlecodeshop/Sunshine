@@ -1,6 +1,7 @@
 package com.iglcs.sunshine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = "Sunshine MAINACT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +142,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                     forecastJsonStr = buffer.toString();
                 } catch (IOException e) {
-                    Log.e("PlaceholderFragment", "Error ", e);
+                    Log.e(LOG_TAG, "Error ", e);
                     // If the code didn't successfully get the weather data, there's no point in attempting
                     // to parse it.
                     forecastJsonStr = null;
@@ -168,7 +171,7 @@ public class MainActivity extends ActionBarActivity {
                         m_adapter.add(str);
                     }
                 } catch (JSONException e) {
-                   Log.d("WEATHERUPDATE",e.getMessage());
+                   Log.d(LOG_TAG,e.getMessage());
                 }
 
 
@@ -194,11 +197,16 @@ public class MainActivity extends ActionBarActivity {
 
                     Context context = getActivity().getApplicationContext();
 
-                    CharSequence toast_message =(String)adapterView.getAdapter().getItem(i) ;
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context,toast_message,duration);
-                    toast.show();
-                    Log.v("TEST","Hello world !!");
+                    Intent detailIntent = new Intent(context,DetailActivity.class);
+                    detailIntent.putExtra(Intent.EXTRA_TEXT,(String)adapterView.getAdapter().getItem(i));
+                    detailIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(detailIntent);
+
+//                    CharSequence toast_message =(String)adapterView.getAdapter().getItem(i) ;
+//                    int duration = Toast.LENGTH_SHORT;
+//                    Toast toast = Toast.makeText(context,toast_message,duration);
+//                    toast.show();
+//                    Log.v("TEST","Hello world !!");
                 }
             });
             return rootView;
