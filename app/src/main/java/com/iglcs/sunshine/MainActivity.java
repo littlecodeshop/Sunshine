@@ -2,9 +2,11 @@ package com.iglcs.sunshine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -59,6 +61,8 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Intent settings = new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(settings);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -79,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
 
             private final static String WEATHERAPI_AUTHORITY = "api.openweathermap.org";
             private final static String WEATHERAPI_FORCAST_SERVICE = "data/2.5/forecast/daily";
-            private final static String DEFAULT_POSTCODE = "94370";
+
 
 
             @Override
@@ -88,9 +92,9 @@ public class MainActivity extends ActionBarActivity {
                 BufferedReader reader           = null;
 
                 //get the parameter -> postal code
-                String postCode = DEFAULT_POSTCODE;
-                if(strings.length>0)
-                    postCode = strings[0];
+                String postCode = strings[0];
+
+
 
                 // Will contain the raw JSON response as a string.
                 String forecastJsonStr = null;
@@ -183,7 +187,10 @@ public class MainActivity extends ActionBarActivity {
                 Bundle savedInstanceState) {
 
 
-            new WeatherUpdate().execute();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location = prefs.getString(getActivity().getString(R.string.settings_location_key),getActivity().getString(R.string.settings_location_default));
+
+            new WeatherUpdate().execute(location);
 
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             ArrayList<String> data = new ArrayList<String>();
